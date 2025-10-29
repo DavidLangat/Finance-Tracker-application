@@ -11,6 +11,36 @@ This template includes a minimal webpack tweak for web builds and ships with Typ
 - `npx expo start --android`: run on Android emulator (Android Studio required)
 - `npx expo start --tunnel`: connect physical devices over the network
 
+### Use as a GitHub Template (recommended)
+
+1. Mark this repository as a Template in GitHub (Settings → Template repository).
+2. Click "Use this template" → "Create a new repository" to generate a fresh repo.
+3. Clone your new repo and run:
+
+   - `npm install`
+   - `npm run init` to personalize the project (sets app name and slug)
+   - `npx expo start`
+
+You can also run non-interactively:
+
+```bash
+npm run init -- --name="My App" --slug=my-app
+```
+
+### Use via create-expo-app
+
+You can initialize directly from this repository:
+
+```bash
+npx create-expo-app -t github:{your-username}/expo-tailwind my-app
+```
+
+Or publish this repo as an npm template (name it like `expo-template-tailwind`) and use:
+
+```bash
+npx create-expo-app -t expo-template-tailwind my-app
+```
+
 ## Documentation
 
 - [Expo Docs](https://docs.expo.dev/)
