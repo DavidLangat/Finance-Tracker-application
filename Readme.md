@@ -1,7 +1,6 @@
-# Expo Tailwind Boilerplate
+# Expo + Tailwind (NativeWind) Template
 
-React Native project bootstrapped with Expo and NativeWind (Tailwind CSS for React Native).
-This template includes a minimal webpack tweak for web builds and ships with TypeScript, dark mode, and a suggested folder structure.
+Professional Expo template with NativeWind (Tailwind), React Navigation (stack + tabs), theming with dark mode, safe areas, icons, env variables, TypeScript, ESLint and Prettier.
 
 ## Getting Started
 
@@ -44,6 +43,20 @@ npx create-expo-app -t expo-template-tailwind my-app
 ## Documentation
 
 - [Expo Docs](https://docs.expo.dev/)
+- [React Navigation](https://reactnavigation.org/)
+- [NativeWind](https://www.nativewind.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+## Features
+
+- **Navigation**: `@react-navigation/native`, stack + bottom tabs pre-wired
+- **Styling**: Tailwind via NativeWind, responsive utilities, dark mode
+- **Theming**: `src/theme/ThemeProvider.tsx` with toggling and Appearance sync
+- **UI Kit**: Reusable `Button`, `Card`, `Input`, `Modal`, `Loader`, `ErrorState`
+- **Safe Areas**: `react-native-safe-area-context` at the app root
+- **Icons**: `@expo/vector-icons` with sample usage
+- **Env Vars**: `react-native-dotenv` for `API_URL`, `ENV`
+- **Quality**: TypeScript, ESLint, Prettier configured
 
 ## Folder Structure
 This template uses an opinionated, scalable structure for feature development.
@@ -75,7 +88,43 @@ TypeScript is enabled by default via `tsconfig.json`. The app entry is `App.tsx`
 ## Tailwind / NativeWind
 
 - Tailwind `content` includes `./app`, `./src`, and root `App.*` to ensure styles are picked up.
-- Dark mode is enabled with `darkMode: "class"`. Toggle a wrapper class at the root to switch.
+- Dark mode uses system Appearance (`darkMode: "media"`). Use `useThemeScheme()` or the Settings screen toggle to switch.
+
+## Navigation
+
+- Entry: `src/navigation/index.tsx` (stack) and `src/navigation/tabs.tsx` (tabs)
+- Example screens: `Home`, `Settings`, `Details`
+
+## Theming & Dark Mode
+
+- Provider: `src/theme/ThemeProvider.tsx` exposes `colorScheme`, `toggleTheme`
+- Tokens: `src/theme/tokens.ts` for colors/fonts
+- Example toggle in `Settings` screen
+
+## Environment Variables
+
+- Configured via Babel plugin `module:react-native-dotenv`
+- Add a `.env` file in project root:
+
+```env
+API_URL=https://api.example.com
+ENV=development
+```
+
+- Usage in code: see `src/services/config.ts`
+
+## Linting & Formatting
+
+- ESLint: `.eslintrc.cjs`, `.eslintignore`
+- Prettier: `.prettierrc`, `.prettierignore`
+- Scripts: `npm run lint`, `npm run format`
+
+## Development Notes
+
+- After cloning, run `npm install` (or `yarn`). Then run:
+  - `npm run init` to set app name/slug
+  - `npm run web` or `npm run ios` / `npm run android`
+- If versions mismatch, prefer `npx expo install <pkg>` to auto-resolve matching versions.
 
 ## Notes on versions
 
