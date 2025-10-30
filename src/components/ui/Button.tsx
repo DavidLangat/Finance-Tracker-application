@@ -8,7 +8,12 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function Button({ label, onPress, variant = "primary", disabled }: Props): JSX.Element {
+export default function Button({
+  label,
+  onPress,
+  variant = "primary",
+  disabled,
+}: Props): JSX.Element {
   const base = "px-4 py-3 rounded-md items-center justify-center ";
   const styles = {
     primary: "bg-primary-500 active:bg-primary-600",
@@ -22,10 +27,13 @@ export default function Button({ label, onPress, variant = "primary", disabled }
   } as const;
 
   return (
-    <Pressable className={base + styles[variant]} onPress={onPress} disabled={disabled} accessibilityRole="button">
+    <Pressable
+      className={base + styles[variant]}
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+    >
       <Text className={"font-medium " + text[variant]}>{label}</Text>
     </Pressable>
   );
 }
-
-
