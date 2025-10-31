@@ -16,7 +16,7 @@ export default function Button({
 }: Props): JSX.Element {
   const base = "px-4 py-3 rounded-md items-center justify-center ";
   const styles = {
-    primary: "bg-primary-500 active:bg-primary-600",
+    primary: "bg-[#66951f] active:bg-[#547c1a]",
     secondary: "bg-gray-200 dark:bg-gray-800",
     ghost: "bg-transparent",
   } as const;

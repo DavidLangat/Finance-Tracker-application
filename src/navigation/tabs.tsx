@@ -1,12 +1,14 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "@/features/home/screens/HomeScreen";
+import ExchangeRatesScreen from "@/features/home/screens/ExchangeRatesScreen";
 import SettingsScreen from "@/features/settings/screens/SettingsScreen";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useThemeScheme } from "@/theme/ThemeProvider";
 
 export type TabsParamList = {
   Home: undefined;
+  Exchange: undefined;
   Settings: undefined;
 };
 
@@ -19,7 +21,7 @@ export default function TabsNavigator(): JSX.Element {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: isDark ? "#ffffff" : "#111827",
+        tabBarActiveTintColor: isDark ? "#ffffff" : "#66951f",
         tabBarStyle: { backgroundColor: isDark ? "#111827" : "#ffffff" },
       }}
     >
@@ -33,11 +35,21 @@ export default function TabsNavigator(): JSX.Element {
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name="Exchange"
+        component={ExchangeRatesScreen}
+        options={{
+          tabBarLabel: "Exchange Rate",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="swap-vert" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="More"
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="settings" color={color} size={size} />
+            <MaterialIcons name="more-horiz" color={color} size={size} />
           ),
         }}
       />

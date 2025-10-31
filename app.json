@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-tailwind",
-    "slug": "expo-tailwind",
+    "name": "Finance Tracker",
+    "slug": "finance-tracker-application",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-sqlite"
+    ]
   }
 }
