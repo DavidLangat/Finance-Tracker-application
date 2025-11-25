@@ -1,132 +1,178 @@
-# Expo + Tailwind (NativeWind) Template
+# Kenya Weight & Muscle Gain App 🇰🇪
 
-Professional Expo template with NativeWind (Tailwind), React Navigation (stack + tabs), theming with dark mode, safe areas, icons, env variables, TypeScript, ESLint and Prettier.
+A React Native mobile application built with Expo to help Kenyans track their weight gain and muscle building journey.
 
-## Getting Started
+## Tech Stack
 
-- `npm install` or `yarn install`
-- `npx expo start --web`: run in the browser
-- `npx expo start --ios`: run on iOS simulator (Xcode required)
-- `npx expo start --android`: run on Android emulator (Android Studio required)
-- `npx expo start --tunnel`: connect physical devices over the network
+- **Framework**: Expo + React Native
+- **Navigation**: React Navigation (Bottom Tabs)
+- **Styling**: NativeWind (Tailwind CSS for React Native)
+- **Storage**: AsyncStorage for local data persistence
+- **Language**: TypeScript
 
-### Use as a GitHub Template (recommended)
+## Project Structure
 
-1. Mark this repository as a Template in GitHub (Settings → Template repository).
-2. Click "Use this template" → "Create a new repository" to generate a fresh repo.
-3. Clone your new repo and run:
-
-   - `npm install`
-   - `npm run init` to personalize the project (sets app name and slug)
-   - `npx expo start`
-
-You can also run non-interactively:
-
-```bash
-npm run init -- --name="My App" --slug=my-app
 ```
-
-### Use via create-expo-app
-
-You can initialize directly from this repository:
-
-```bash
-npx create-expo-app -t github:{your-username}/expo-tailwind my-app
+meal/
+├── App.tsx                      # Root application component
+├── src/
+│   ├── components/              # Reusable UI components (future)
+│   ├── constants/
+│   │   └── theme.ts            # App-wide theme constants (colors, spacing, etc.)
+│   ├── navigation/
+│   │   └── TabNavigator.tsx    # Bottom tab navigation configuration
+│   ├── screens/                # Screen components
+│   │   ├── HomeScreen.tsx      # Home dashboard with quick stats
+│   │   ├── WorkoutsScreen.tsx  # Workout tracking screen
+│   │   ├── MealsScreen.tsx     # Meal planning and nutrition screen
+│   │   ├── ProgressScreen.tsx  # Progress tracking with charts
+│   │   └── CommunityScreen.tsx # Community features and social
+│   ├── services/
+│   │   └── storage.ts          # AsyncStorage utility functions
+│   └── types/
+│       └── navigation.ts       # TypeScript navigation types
+├── types/
+│   └── nativewind.d.ts         # NativeWind type declarations
+└── package.json
 ```
-
-Or publish this repo as an npm template (name it like `expo-template-tailwind`) and use:
-
-```bash
-npx create-expo-app -t expo-template-tailwind my-app
-```
-
-## Documentation
-
-- [Expo Docs](https://docs.expo.dev/)
-- [React Navigation](https://reactnavigation.org/)
-- [NativeWind](https://www.nativewind.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
 
 ## Features
 
-- **Navigation**: `@react-navigation/native`, stack + bottom tabs pre-wired
-- **Styling**: Tailwind via NativeWind, responsive utilities, dark mode
-- **Theming**: `src/theme/ThemeProvider.tsx` with toggling and Appearance sync
-- **UI Kit**: Reusable `Button`, `Card`, `Input`, `Modal`, `Loader`, `ErrorState`
-- **Safe Areas**: `react-native-safe-area-context` at the app root
-- **Icons**: `@expo/vector-icons` with sample usage
-- **Env Vars**: `react-native-dotenv` for `API_URL`, `ENV`
-- **Quality**: TypeScript, ESLint, Prettier configured
+### 🏠 Home Screen
+- Welcome message with Swahili greeting
+- Quick stats overview (weight, goals, workouts, calories)
+- Quick action buttons to navigate to other sections
+- Motivational messages
 
-## Folder Structure
-This template uses an opinionated, scalable structure for feature development.
+### 💪 Workouts Screen
+- Workout categories (Strength Training, Cardio, Flexibility, Custom)
+- Recent workouts list
+- Easy workout logging
 
-- `assets`: platform icons, splash, and favicon for web
-- `src/components`: reusable UI components (e.g., buttons, headers)
-- `src/features`: feature-specific screens, hooks, services, and state
-- `src/hooks`: shared custom hooks
-- `src/localizations`: i18n resources
-- `src/navigation`: navigation setup (stacks, tabs, etc.)
-- `src/services`: infrastructure such as API clients and notifications
-- `src/theme`: theming, tokens, color schemes
-- `src/types`: app-wide TypeScript types
-- `src/utils`: general-purpose utilities
+### 🍽️ Meals Screen
+- Daily nutrition tracking (Calories, Protein, Carbs, Fats)
+- Meal type logging (Breakfast, Lunch, Dinner, Snacks)
+- Kenyan nutrition tips
+- Progress bars for nutrition goals
 
-### Example feature structure
+### 📊 Progress Screen
+- Key metrics tracking (Weight, Muscle Mass, Body Fat %, BMI)
+- Timeframe selector (Week, Month, 3 Months, Year)
+- Progress charts (placeholder)
+- Progress photos
 
-- `src/features/name-feature/api`: API clients specific to the feature
-- `src/features/name-feature/helpers`: internal helpers for the feature
-- `src/features/name-feature/hooks`: feature-scoped hooks
-- `src/features/name-feature/screens`: screens for the feature (e.g., auth: login, signup)
-- `src/features/name-feature/services`: feature-specific services (e.g., auth service)
-- `src/features/name-feature/store`: state management for the feature
+### 🤝 Community Screen
+- Community features (Success Stories, Workout Groups, Nutrition Tips, Challenges)
+- Recent posts feed
+- Search functionality
+- Share progress with community
 
-## TypeScript
+## Getting Started
 
-TypeScript is enabled by default via `tsconfig.json`. The app entry is `App.tsx`.
+### Prerequisites
 
-## Tailwind / NativeWind
+- Node.js (v14 or higher)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (for Mac) or Android Emulator
 
-- Tailwind `content` includes `./app`, `./src`, and root `App.*` to ensure styles are picked up.
-- Dark mode uses system Appearance (`darkMode: "media"`). Use `useThemeScheme()` or the Settings screen toggle to switch.
+### Installation
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Start the development server:
+```bash
+npm start
+```
+
+3. Run on your preferred platform:
+```bash
+# iOS
+npm run ios
+
+# Android
+npm run android
+
+# Web
+npm run web
+```
+
+## AsyncStorage Utilities
+
+The app includes a comprehensive AsyncStorage service with the following functions:
+
+- `saveData(key, value)` - Save data to local storage
+- `getData(key)` - Retrieve data from storage
+- `removeData(key)` - Remove specific data
+- `clearAll()` - Clear all stored data
+- `getAllKeys()` - Get all storage keys
+- `hasKey(key)` - Check if a key exists
+
+### Storage Keys
+
+Predefined storage keys are available in `src/services/storage.ts`:
+- `@user_profile` - User profile information
+- `@workout_history` - Workout tracking data
+- `@meal_plans` - Meal plans and nutrition data
+- `@progress_data` - Progress tracking data
+- `@settings` - App settings
+
+## Theme & Styling
+
+The app uses a Kenya-inspired color scheme:
+
+- **Primary Green**: `#006B3F` (Kenya flag green)
+- **Accent Red**: `#E74C3C` (Kenya flag red)
+- **Background**: `#F8F9FA`
+- **Text**: `#1A1A1A`
+
+All colors and spacing constants are defined in `src/constants/theme.ts`.
 
 ## Navigation
 
-- Entry: `src/navigation/index.tsx` (stack) and `src/navigation/tabs.tsx` (tabs)
-- Example screens: `Home`, `Settings`, `Details`
+The app uses React Navigation with a bottom tab navigator featuring 5 main screens:
 
-## Theming & Dark Mode
+1. **Home** - Dashboard and overview
+2. **Workouts** - Workout tracking
+3. **Meals** - Nutrition and meal planning
+4. **Progress** - Progress tracking and analytics
+5. **Community** - Social features
 
-- Provider: `src/theme/ThemeProvider.tsx` exposes `colorScheme`, `toggleTheme`
-- Tokens: `src/theme/tokens.ts` for colors/fonts
-- Example toggle in `Settings` screen
+Each tab has custom icons that change based on active/inactive state.
 
-## Environment Variables
+## Development Scripts
 
-- Configured via Babel plugin `module:react-native-dotenv`
-- Add a `.env` file in project root:
-
-```env
-API_URL=https://api.example.com
-ENV=development
+```bash
+npm start          # Start Expo development server
+npm run android    # Run on Android
+npm run ios        # Run on iOS
+npm run web        # Run on web
+npm run lint       # Run ESLint
+npm run format     # Format code with Prettier
 ```
 
-- Usage in code: see `src/services/config.ts`
+## Next Steps
 
-## Linting & Formatting
+- [ ] Implement workout logging functionality
+- [ ] Add meal tracking with Kenyan food database
+- [ ] Create progress charts and analytics
+- [ ] Build community features
+- [ ] Add user authentication
+- [ ] Implement data synchronization
+- [ ] Add camera integration for progress photos
+- [ ] Create workout and meal plan templates
 
-- ESLint: `.eslintrc.cjs`, `.eslintignore`
-- Prettier: `.prettierrc`, `.prettierignore`
-- Scripts: `npm run lint`, `npm run format`
+## Contributing
 
-## Development Notes
+This is a personal project for helping Kenyans achieve their fitness goals. Contributions and suggestions are welcome!
 
-- After cloning, run `npm install` (or `yarn`). Then run:
-  - `npm run init` to set app name/slug
-  - `npm run web` or `npm run ios` / `npm run android`
-- If versions mismatch, prefer `npx expo install <pkg>` to auto-resolve matching versions.
+## License
 
-## Notes on versions
+MIT
 
-Use `npx expo install` to align package versions with your Expo SDK. Avoid manually editing React/React Native versions unless you know they match your SDK.
+---
 
+**Built with ❤️ for the Kenyan fitness community** 🇰🇪
