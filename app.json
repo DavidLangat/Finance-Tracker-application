@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Finance Tracker",
-    "slug": "finance-tracker-application",
+    "name": "MuscleMate",
+    "slug": "muscle-mate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
