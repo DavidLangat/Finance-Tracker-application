@@ -47,15 +47,15 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onPress, onDelete }) => {
 
   return (
     <TouchableOpacity onPress={onPress} className="mb-4" disabled={!onPress}>
-      <View className="bg-white rounded-xl p-4 shadow-sm">
+      <View className="bg-dark-charcoal rounded-2xl p-4 border border-white/5">
         <View className="flex-row items-center justify-between mb-3">
           <View className="flex-row items-center">
             <View className={`${getMealColor(meal.mealType)} rounded-full p-2 mr-3`}>
               <Ionicons name={getMealIcon(meal.mealType) as any} size={20} color="white" />
             </View>
             <View>
-              <Text className="text-gray-800 text-base font-bold">{meal.mealType}</Text>
-              <Text className="text-gray-500 text-xs">{formatTime(meal.timestamp)}</Text>
+              <Text className="text-white text-base font-bold">{meal.mealType}</Text>
+              <Text className="text-gray-400 text-xs">{formatTime(meal.timestamp)}</Text>
             </View>
           </View>
           {onDelete && (
@@ -67,27 +67,27 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onPress, onDelete }) => {
 
         <View className="mb-3">
           {meal.foods.map((food, index) => (
-            <Text key={index} className="text-gray-700 text-sm mb-1">
-              • {food.foodName} ({food.servingSize.name} × {food.quantity})
+            <Text key={index} className="text-gray-300 text-sm mb-1">
+              • {food.foodName} <Text className="text-gray-500">({food.servingSize.name} × {food.quantity})</Text>
             </Text>
           ))}
         </View>
 
-        <View className="flex-row justify-between bg-gray-50 rounded-lg p-3">
+        <View className="flex-row justify-between bg-deep-black/30 rounded-xl p-3">
           <View className="items-center">
-            <Text className="text-gray-800 font-bold">{meal.totalNutrition.calories}</Text>
+            <Text className="text-white font-bold">{meal.totalNutrition.calories}</Text>
             <Text className="text-gray-500 text-xs">kcal</Text>
           </View>
           <View className="items-center">
-            <Text className="text-gray-800 font-bold">{meal.totalNutrition.protein}g</Text>
+            <Text className="text-white font-bold">{meal.totalNutrition.protein}g</Text>
             <Text className="text-gray-500 text-xs">protein</Text>
           </View>
           <View className="items-center">
-            <Text className="text-gray-800 font-bold">{meal.totalNutrition.carbs}g</Text>
+            <Text className="text-white font-bold">{meal.totalNutrition.carbs}g</Text>
             <Text className="text-gray-500 text-xs">carbs</Text>
           </View>
           <View className="items-center">
-            <Text className="text-gray-800 font-bold">{meal.totalNutrition.fat}g</Text>
+            <Text className="text-white font-bold">{meal.totalNutrition.fat}g</Text>
             <Text className="text-gray-500 text-xs">fat</Text>
           </View>
         </View>

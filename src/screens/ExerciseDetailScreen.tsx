@@ -28,7 +28,7 @@ type ExerciseDetailNavigationProp = NativeStackNavigationProp<
 const ExerciseDetailScreen = () => {
   const route = useRoute<ExerciseDetailRouteProp>();
   const navigation = useNavigation<ExerciseDetailNavigationProp>();
-  const { exerciseId } = route.params; // This is now the exercise name
+  const { exerciseId } = route.params;
 
   const exercise = getExerciseByName(exerciseId);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -49,7 +49,7 @@ const ExerciseDetailScreen = () => {
 
   if (!exercise) {
     return (
-      <View className="flex-1 bg-gray-50 items-center justify-center">
+      <View className="flex-1 bg-deep-black items-center justify-center">
         <Text className="text-gray-500">Exercise not found</Text>
       </View>
     );
@@ -58,7 +58,7 @@ const ExerciseDetailScreen = () => {
   const handleMarkComplete = async () => {
     setIsLoading(true);
     const success = await saveCompletedWorkout(
-      exercise.id || exercise.name, // Use name as fallback ID
+      exercise.id || exercise.name,
       exercise.name,
       exercise.sets || 0,
       exercise.reps || 0,
@@ -91,193 +91,138 @@ const ExerciseDetailScreen = () => {
     }
   };
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Strength':
-        return 'bg-red-500';
-      case 'Cardio':
-        return 'bg-blue-500';
-      case 'Flexibility':
-        return 'bg-purple-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Beginner':
-        return 'bg-green-100 text-green-700';
-      case 'Intermediate':
-        return 'bg-yellow-100 text-yellow-700';
-      case 'Advanced':
-        return 'bg-red-100 text-red-700';
-      default:
-        return 'bg-gray-100 text-gray-700';
-    }
-  };
-
   return (
-    <View className="flex-1 bg-gray-50">
-      <ScrollView>
-        {/* Header */}
-        <View className="relative">
+    <View className="flex-1 bg-deep-black">
+      <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 100 }}>
+        {/* Parallax Header Image */}
+        <View className="relative h-96">
           {exercise.imageUrl ? (
             <Image
               source={{ uri: exercise.imageUrl }}
-              className="w-full h-72"
+              className="w-full h-full"
               resizeMode="cover"
             />
           ) : (
-            <View className={`w-full h-72 ${getCategoryColor(exercise.category)}`} />
+            <View className="w-full h-full bg-dark-charcoal" />
           )}
           
-          {/* Overlay gradient/darkening for text readability */}
-          <View className="absolute inset-0 bg-black/40" />
+          {/* Gradient Overlay */}
+          <View className="absolute inset-0 bg-gradient-to-b from-transparent via-deep-black/20 to-deep-black" />
+          <View className="absolute inset-0 bg-black/30" />
 
-          <View className="absolute top-0 left-0 right-0 pt-12 pb-8 px-6">
+          {/* Navigation & Title */}
+          <View className="absolute top-0 left-0 right-0 pt-12 px-6">
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              className="mb-4 bg-white/20 rounded-full p-2 self-start"
+              className="mb-6 bg-black/40 backdrop-blur-md rounded-full p-2 self-start border border-white/10"
             >
               <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
+          </View>
 
-            <Text className="text-white text-3xl font-bold mb-2 shadow-sm">{exercise.name}</Text>
-            <Text className="text-white/90 text-base mb-4 shadow-sm">{exercise.description}</Text>
-
-            <View className="flex-row items-center">
-              <View className={`${getDifficultyColor(exercise.difficulty)} rounded-full px-3 py-1 mr-2`}>
-                <Text className="text-xs font-semibold">{exercise.difficulty}</Text>
+          <View className="absolute bottom-0 left-0 right-0 px-6 pb-8">
+            <View className="flex-row items-center mb-3">
+              <View className="bg-neon-green px-3 py-1 rounded-full mr-2">
+                <Text className="text-deep-black text-xs font-bold uppercase">{exercise.difficulty}</Text>
               </View>
-              <View className="bg-white/20 rounded-full px-3 py-1">
-                <Text className="text-white text-xs font-semibold">{exercise.category}</Text>
+              <View className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-md">
+                <Text className="text-white text-xs font-bold uppercase">{exercise.category}</Text>
               </View>
             </View>
+            <Text className="text-white text-4xl font-bold mb-2 shadow-sm">{exercise.name}</Text>
+            <Text className="text-gray-300 text-base shadow-sm">{exercise.description}</Text>
           </View>
         </View>
 
-        {/* Exercise Stats */}
-        <View className="px-6 -mt-4">
-          <View className="bg-white rounded-2xl p-4 shadow-lg flex-row justify-around">
-            <View className="items-center">
-              <Text className="text-gray-800 text-2xl font-bold">{exercise.sets}</Text>
-              <Text className="text-gray-500 text-xs">Sets</Text>
+        {/* Content Container */}
+        <View className="px-6 pt-6">
+          {/* Stats Grid */}
+          <View className="flex-row justify-between mb-8">
+            <View className="bg-dark-charcoal rounded-2xl p-4 w-[31%] items-center border border-white/10">
+              <Text className="text-neon-green text-2xl font-bold">{exercise.sets}</Text>
+              <Text className="text-gray-400 text-xs uppercase font-medium">Sets</Text>
             </View>
-            <View className="items-center">
-              <Text className="text-gray-800 text-2xl font-bold">{exercise.reps}</Text>
-              <Text className="text-gray-500 text-xs">Reps</Text>
+            <View className="bg-dark-charcoal rounded-2xl p-4 w-[31%] items-center border border-white/10">
+              <Text className="text-neon-green text-2xl font-bold">{exercise.reps}</Text>
+              <Text className="text-gray-400 text-xs uppercase font-medium">Reps</Text>
             </View>
-            <View className="items-center">
-              <Text className="text-gray-800 text-2xl font-bold">{completionCount}</Text>
-              <Text className="text-gray-500 text-xs">Times Done</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Equipment */}
-        <View className="px-6 mt-6">
-          <Text className="text-gray-800 text-lg font-semibold mb-3">Equipment</Text>
-          <View className="bg-white rounded-xl p-4">
-            <View className="flex-row items-center">
-              <Ionicons
-                name={exercise.equipment === 'None' ? 'body-outline' : 'home-outline'}
-                size={24}
-                color="#6B7280"
-              />
-              <View className="ml-3 flex-1">
-                <Text className="text-gray-800 font-semibold">
-                  {exercise.equipment === 'None' ? 'Bodyweight Only' : 'Household Items'}
-                </Text>
-                {exercise.equipmentDetails && (
-                  <Text className="text-gray-600 text-sm mt-1">
-                    {exercise.equipmentDetails}
-                  </Text>
-                )}
-              </View>
+            <View className="bg-dark-charcoal rounded-2xl p-4 w-[31%] items-center border border-white/10">
+              <Text className="text-white text-2xl font-bold">{completionCount}</Text>
+              <Text className="text-gray-400 text-xs uppercase font-medium">Completed</Text>
             </View>
           </View>
-        </View>
 
-        {/* Target Muscles */}
-        <View className="px-6 mt-6">
-          <Text className="text-gray-800 text-lg font-semibold mb-3">Target Muscles</Text>
-          <View className="flex-row flex-wrap">
-            {exercise.targetMuscles.map((muscle: string, index: number) => (
-              <View key={index} className="bg-green-100 rounded-full px-3 py-1 mr-2 mb-2">
-                <Text className="text-green-700 text-sm font-semibold">{muscle}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* Instructions */}
-        <View className="px-6 mt-6">
-          <Text className="text-gray-800 text-lg font-semibold mb-3">Instructions</Text>
-          <View className="bg-white rounded-xl p-4">
+          {/* Instructions */}
+          <Text className="text-white text-xl font-bold mb-4">Instructions</Text>
+          <View className="bg-dark-charcoal rounded-2xl p-5 border border-white/10 mb-8">
             {exercise.instructions.map((instruction: string, index: number) => (
-              <View key={index} className="flex-row mb-3 last:mb-0">
-                <View className="bg-green-600 rounded-full w-6 h-6 items-center justify-center mr-3">
-                  <Text className="text-white text-xs font-bold">{index + 1}</Text>
+              <View key={index} className="flex-row mb-4 last:mb-0">
+                <View className="bg-neon-green/10 w-8 h-8 rounded-full items-center justify-center mr-4 mt-1">
+                  <Text className="text-neon-green font-bold">{index + 1}</Text>
                 </View>
-                <Text className="text-gray-700 flex-1">{instruction}</Text>
+                <Text className="text-gray-300 text-base flex-1 leading-6">{instruction}</Text>
               </View>
             ))}
           </View>
-        </View>
 
-        {/* Tips */}
-        {exercise.tips && exercise.tips.length > 0 && (
-          <View className="px-6 mt-6">
-            <Text className="text-gray-800 text-lg font-semibold mb-3">Pro Tips 💡</Text>
-            <View className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
-              {exercise.tips.map((tip: string, index: number) => (
-                <View key={index} className="flex-row mb-2 last:mb-0">
-                  <Ionicons name="bulb" size={16} color="#F59E0B" />
-                  <Text className="text-gray-700 ml-2 flex-1">{tip}</Text>
-                </View>
-              ))}
-            </View>
+          {/* Target Muscles */}
+          <Text className="text-white text-xl font-bold mb-4">Target Muscles</Text>
+          <View className="flex-row flex-wrap mb-8">
+            {exercise.targetMuscles.map((muscle: string, index: number) => (
+              <View key={index} className="bg-white/10 rounded-full px-4 py-2 mr-2 mb-2 border border-white/5">
+                <Text className="text-white text-sm font-medium">{muscle}</Text>
+              </View>
+            ))}
           </View>
-        )}
 
-        {/* Video Button */}
-        {exercise.videoUrl && (
-          <View className="px-6 mt-6">
+          {/* Pro Tips */}
+          {exercise.tips && exercise.tips.length > 0 && (
+            <View className="mb-8">
+              <Text className="text-white text-xl font-bold mb-4">Pro Tips</Text>
+              <View className="bg-neon-green/5 rounded-2xl p-5 border border-neon-green/20">
+                {exercise.tips.map((tip: string, index: number) => (
+                  <View key={index} className="flex-row mb-3 last:mb-0">
+                    <Ionicons name="bulb-outline" size={20} color="#00E676" className="mt-0.5" />
+                    <Text className="text-gray-300 ml-3 flex-1 leading-5">{tip}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* Video Button */}
+          {exercise.videoUrl && (
             <TouchableOpacity
               onPress={handleWatchVideo}
-              className="bg-red-600 rounded-xl p-4 flex-row items-center justify-center"
+              className="bg-dark-charcoal rounded-2xl p-4 flex-row items-center justify-center border border-white/10 mb-8"
             >
-              <Ionicons name="play-circle" size={24} color="white" />
+              <Ionicons name="play-circle" size={24} color="#EF4444" />
               <Text className="text-white font-semibold ml-2">Watch Video Tutorial</Text>
             </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Bottom spacing */}
-        <View className="h-24" />
+          )}
+        </View>
       </ScrollView>
 
-      {/* Fixed Bottom Button */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+      {/* Sticky Bottom Button */}
+      <View className="absolute bottom-0 left-0 right-0 bg-deep-black/90 backdrop-blur-lg border-t border-white/10 p-6 pb-8">
         <TouchableOpacity
           onPress={handleMarkComplete}
           disabled={isCompleted || isLoading}
-          className={`rounded-xl p-4 flex-row items-center justify-center ${
-            isCompleted ? 'bg-green-100' : 'bg-green-600'
+          className={`rounded-2xl p-4 flex-row items-center justify-center shadow-lg ${
+            isCompleted ? 'bg-dark-charcoal border border-neon-green' : 'bg-neon-green'
           }`}
         >
           <Ionicons
             name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
             size={24}
-            color={isCompleted ? '#10B981' : 'white'}
+            color={isCompleted ? '#00E676' : '#000000'}
           />
           <Text
-            className={`font-bold ml-2 ${
-              isCompleted ? 'text-green-700' : 'text-white'
+            className={`font-bold text-lg ml-2 ${
+              isCompleted ? 'text-neon-green' : 'text-deep-black'
             }`}
           >
-            {isCompleted ? 'Completed Today ✓' : 'Mark as Complete'}
+            {isCompleted ? 'Completed Today' : 'Mark as Complete'}
           </Text>
         </TouchableOpacity>
       </View>

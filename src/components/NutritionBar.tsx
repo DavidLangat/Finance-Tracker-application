@@ -16,12 +16,12 @@ const NutritionBar: React.FC<NutritionBarProps> = ({ label, current, goal, unit,
   return (
     <View className="mb-4">
       <View className="flex-row justify-between mb-2">
-        <Text className="text-gray-700 font-semibold">{label}</Text>
-        <Text className={`font-semibold ${isOverGoal ? 'text-red-600' : 'text-gray-700'}`}>
+        <Text className="text-white font-semibold">{label}</Text>
+        <Text className={`font-semibold ${isOverGoal ? 'text-red-500' : 'text-gray-300'}`}>
           {Math.round(current)} / {goal} {unit}
         </Text>
       </View>
-      <View className="bg-gray-200 rounded-full h-3 overflow-hidden">
+      <View className="bg-white/10 rounded-full h-3 overflow-hidden">
         <View
           className={`${color} rounded-full h-3`}
           style={{ width: `${percentage}%` }}

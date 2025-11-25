@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { TabParamList } from '../types/navigation';
@@ -24,13 +25,13 @@ const TabNavigator = () => {
               iconName = focused ? 'home' : 'home-outline';
               break;
             case 'Workouts':
-              iconName = focused ? 'fitness' : 'fitness-outline';
+              iconName = focused ? 'barbell' : 'barbell-outline';
               break;
             case 'Meals':
               iconName = focused ? 'restaurant' : 'restaurant-outline';
               break;
             case 'Progress':
-              iconName = focused ? 'trending-up' : 'trending-up-outline';
+              iconName = focused ? 'stats-chart' : 'stats-chart-outline';
               break;
             case 'Community':
               iconName = focused ? 'people' : 'people-outline';
@@ -39,60 +40,34 @@ const TabNavigator = () => {
               iconName = 'help-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View>
+              <Ionicons name={iconName} size={28} color={color} />
+              {route.name === 'Progress' && (
+                <View className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-black" />
+              )}
+            </View>
+          );
         },
-        tabBarActiveTintColor: '#006B3F', // Kenya green
-        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarActiveTintColor: '#00E676', // Neon Green
+        tabBarInactiveTintColor: '#505050', // Dark Grey
+        tabBarShowLabel: false, // Hide labels
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
-          paddingBottom: 8,
-          paddingTop: 8,
-          height: 60,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
+          backgroundColor: '#000000', // Pure Black
+          borderTopWidth: 0,
+          elevation: 0, // Remove shadow on Android
+          shadowOpacity: 0, // Remove shadow on iOS
+          height: 80, // Taller for better touch targets
+          paddingTop: 10,
         },
         headerShown: false,
       })}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-        }}
-      />
-      <Tab.Screen
-        name="Workouts"
-        component={WorkoutStackNavigator}
-        options={{
-          tabBarLabel: 'Workouts',
-        }}
-      />
-      <Tab.Screen
-        name="Meals"
-        component={MealStackNavigator}
-        options={{
-          tabBarLabel: 'Meals',
-        }}
-      />
-      <Tab.Screen
-        name="Progress"
-        component={ProgressStackNavigator}
-        options={{
-          tabBarLabel: 'Progress',
-        }}
-      />
-      <Tab.Screen
-        name="Community"
-        component={CommunityScreen}
-        options={{
-          tabBarLabel: 'Community',
-        }}
-      />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Workouts" component={WorkoutStackNavigator} />
+      <Tab.Screen name="Meals" component={MealStackNavigator} />
+      <Tab.Screen name="Progress" component={ProgressStackNavigator} />
+      {/* <Tab.Screen name="Community" component={CommunityScreen} /> */}
     </Tab.Navigator>
   );
 };

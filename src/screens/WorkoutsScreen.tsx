@@ -39,15 +39,9 @@ const WorkoutsScreen = () => {
 
       // Check completed exercises
       const completed = new Set<string>();
-      // We need to check completion for all exercises in the plan
-      // This might be expensive if the plan is huge, but for 7 days it's fine
       for (const day of days) {
         if (day.exercises) {
           for (const exercise of day.exercises) {
-             // Use name as ID if ID is missing, or generate a consistent ID
-             // Ideally exercises should have IDs. In our data they don't have explicit IDs yet in the new plan.
-             // Let's assume we use name for now or we need to update data to have IDs.
-             // Actually, let's use name as fallback ID for tracking
              const exerciseId = exercise.name; 
              const isCompleted = await isExerciseCompletedToday(exerciseId);
              if (isCompleted) {
@@ -75,11 +69,6 @@ const WorkoutsScreen = () => {
   };
 
   const handleExercisePress = (exercise: Exercise) => {
-    // Navigate to detail or just show a modal?
-    // For now, let's assume we have an ID. If not, we pass the exercise object?
-    // The navigation param expects exerciseId.
-    // We might need to update navigation to pass the whole exercise object or ensure IDs.
-    // Let's update navigation types later. For now, we'll use name as ID.
     navigation.navigate('ExerciseDetail', { exerciseId: exercise.name });
   };
 
@@ -93,16 +82,18 @@ const WorkoutsScreen = () => {
       <TouchableOpacity
         key={index}
         onPress={() => handleExercisePress(exercise)}
-        className="bg-white rounded-xl p-4 mb-3 shadow-sm flex-row items-center justify-between"
+        className="bg-deep-black/50 rounded-xl p-4 mb-3 border border-white/5 flex-row items-center justify-between"
       >
         <View className="flex-1">
-          <Text className="text-gray-800 font-bold text-base">{exercise.name}</Text>
-          <Text className="text-gray-600 text-sm">
+          <Text className={`font-bold text-base ${isCompleted ? 'text-neon-green' : 'text-white'}`}>
+            {exercise.name}
+          </Text>
+          <Text className="text-gray-400 text-sm">
             {exercise.sets} sets × {exercise.reps} {typeof exercise.reps === 'number' ? 'reps' : ''}
           </Text>
         </View>
         {isCompleted ? (
-          <Ionicons name="checkmark-circle" size={24} color="#16A34A" />
+          <Ionicons name="checkmark-circle" size={24} color="#00E676" />
         ) : (
           <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
         )}
@@ -111,141 +102,152 @@ const WorkoutsScreen = () => {
   };
 
   return (
-    <ScrollView
-      className="flex-1 bg-gray-50"
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-    >
-      {/* Header */}
-      <View className="bg-green-700 pt-12 pb-6 px-6">
-        <View className="flex-row items-center justify-between mb-4">
-          <View>
-            <Text className="text-white text-3xl font-bold mb-2">Workouts 💪</Text>
-            <Text className="text-green-100 text-base">7-Day Muscle Building Plan</Text>
-          </View>
-          <View className="bg-white/20 rounded-xl p-3">
-            <Text className="text-white text-xl font-bold text-center">{streak}</Text>
-            <Text className="text-green-100 text-xs">Day Streak</Text>
+    <View className="flex-1 bg-deep-black">
+      <ScrollView
+        className="flex-1"
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#00E676" />}
+      >
+        {/* Header */}
+        <View className="pt-16 pb-6 px-6">
+          <View className="flex-row items-center justify-between mb-4">
+            <View>
+              <Text className="text-white text-3xl font-bold mb-1">Workouts 💪</Text>
+              <Text className="text-neon-green text-base font-medium">7-Day Muscle Building Plan</Text>
+            </View>
+            <View className="bg-dark-charcoal border border-white/10 rounded-xl p-3 items-center min-w-[70px]">
+              <View className="flex-row items-center">
+                <Ionicons name="flame" size={16} color="#00E676" className="mr-1" />
+                <Text className="text-white text-xl font-bold">{streak}</Text>
+              </View>
+              <Text className="text-gray-400 text-[10px] uppercase tracking-wide">Streak</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Today's Workout */}
-      <View className="px-6 mt-6">
-        <Text className="text-gray-800 text-lg font-semibold mb-4">Today's Focus</Text>
-        {todayWorkout ? (
-          <View className="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
-            <View className="flex-row justify-between items-start mb-2">
-              <View>
-                <Text className="text-green-800 text-xl font-bold">{todayWorkout.day}</Text>
-                <Text className="text-green-700 font-medium">{todayWorkout.focus}</Text>
+        {/* Today's Workout */}
+        <View className="px-6 mb-8">
+          <Text className="text-white text-lg font-bold mb-4">Today's Focus</Text>
+          {todayWorkout ? (
+            <View className="bg-dark-charcoal border border-neon-green/30 rounded-2xl p-5 shadow-lg shadow-neon-green/5">
+              <View className="flex-row justify-between items-start mb-4">
+                <View>
+                  <Text className="text-neon-green text-xl font-bold mb-1">{todayWorkout.day}</Text>
+                  <Text className="text-white font-medium text-lg">{todayWorkout.focus}</Text>
+                </View>
+                <View className="bg-neon-green/10 p-2 rounded-full">
+                  {todayWorkout.focus === 'Rest' ? (
+                     <Ionicons name="bed" size={24} color="#00E676" />
+                  ) : (
+                     <Ionicons name="barbell" size={24} color="#00E676" />
+                  )}
+                </View>
               </View>
-              {todayWorkout.focus === 'Rest' ? (
-                 <Ionicons name="bed" size={32} color="#16A34A" />
+              
+              {todayWorkout.instructions && (
+                <View className="bg-deep-black/30 rounded-lg p-3 mb-4">
+                  <Text className="text-gray-300 text-sm italic">
+                    💡 {todayWorkout.instructions}
+                  </Text>
+                </View>
+              )}
+
+              {todayWorkout.exercises && todayWorkout.exercises.length > 0 ? (
+                <View>
+                  <Text className="text-gray-400 text-xs uppercase font-bold mb-3 tracking-wider">Exercises</Text>
+                  {todayWorkout.exercises.map((exercise, idx) => (
+                    <View key={idx} className="flex-row items-center mb-3 last:mb-0">
+                      <Ionicons 
+                        name={completedExerciseIds.has(exercise.name) ? "checkbox" : "square-outline"} 
+                        size={20} 
+                        color={completedExerciseIds.has(exercise.name) ? "#00E676" : "#6B7280"} 
+                      />
+                      <Text className={`ml-3 flex-1 ${completedExerciseIds.has(exercise.name) ? 'text-neon-green line-through' : 'text-gray-300'}`}>
+                        {exercise.name} <Text className="text-gray-500">• {exercise.sets}x{exercise.reps}</Text>
+                      </Text>
+                    </View>
+                  ))}
+                  <TouchableOpacity 
+                    className="bg-neon-green rounded-xl py-4 mt-4 items-center shadow-md shadow-neon-green/20"
+                    onPress={() => setExpandedDay(todayWorkout.day)}
+                  >
+                    <Text className="text-deep-black font-bold text-base">Start Workout</Text>
+                  </TouchableOpacity>
+                </View>
               ) : (
-                 <Ionicons name="barbell" size={32} color="#16A34A" />
+                <View className="items-center py-4">
+                  <Text className="text-neon-green font-medium">Enjoy your rest day! 😴</Text>
+                </View>
               )}
             </View>
-            
-            {todayWorkout.instructions && (
-              <Text className="text-green-600 text-sm mb-4 italic">
-                {todayWorkout.instructions}
-              </Text>
-            )}
+          ) : (
+            <Text className="text-gray-500 italic">No workout plan found for today.</Text>
+          )}
+        </View>
 
-            {todayWorkout.exercises && todayWorkout.exercises.length > 0 ? (
-              <View>
-                <Text className="text-green-800 font-semibold mb-2">Exercises:</Text>
-                {todayWorkout.exercises.map((exercise, idx) => (
-                  <View key={idx} className="flex-row items-center mb-2">
-                    <Ionicons 
-                      name={completedExerciseIds.has(exercise.name) ? "checkbox" : "square-outline"} 
-                      size={20} 
-                      color="#16A34A" 
-                    />
-                    <Text className="text-green-700 ml-2 flex-1">
-                      {exercise.name} • {exercise.sets}x{exercise.reps}
+        {/* Weekly Schedule */}
+        <View className="px-6 mb-8">
+          <Text className="text-white text-lg font-bold mb-4">Weekly Schedule</Text>
+          {allDays.map((day) => (
+            <View key={day.day} className="mb-4">
+              <TouchableOpacity
+                onPress={() => toggleDay(day.day)}
+                className={`flex-row items-center justify-between p-4 rounded-xl border ${
+                  expandedDay === day.day 
+                    ? 'bg-dark-charcoal border-neon-green/50' 
+                    : 'bg-dark-charcoal border-white/5'
+                }`}
+              >
+                <View className="flex-row items-center">
+                  <View className={`w-10 h-10 rounded-full items-center justify-center mr-3 ${
+                    expandedDay === day.day ? 'bg-neon-green' : 'bg-white/10'
+                  }`}>
+                    <Text className={`font-bold text-xs ${
+                      expandedDay === day.day ? 'text-deep-black' : 'text-white'
+                    }`}>
+                      {day.day.substring(0, 3)}
                     </Text>
                   </View>
-                ))}
-                <TouchableOpacity 
-                  className="bg-green-600 rounded-lg py-3 mt-3 items-center"
-                  onPress={() => setExpandedDay(todayWorkout.day)}
-                >
-                  <Text className="text-white font-bold">Start Workout</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <Text className="text-green-600">Enjoy your rest day! 😴</Text>
-            )}
-          </View>
-        ) : (
-          <Text className="text-gray-500 italic">No workout plan found for today.</Text>
-        )}
-      </View>
-
-      {/* Weekly Schedule */}
-      <View className="px-6 mb-8">
-        <Text className="text-gray-800 text-lg font-semibold mb-4">Weekly Schedule</Text>
-        {allDays.map((day) => (
-          <View key={day.day} className="mb-4">
-            <TouchableOpacity
-              onPress={() => toggleDay(day.day)}
-              className={`flex-row items-center justify-between p-4 rounded-xl ${
-                expandedDay === day.day ? 'bg-green-600' : 'bg-white'
-              } shadow-sm`}
-            >
-              <View className="flex-row items-center">
-                <View className={`w-10 h-10 rounded-full items-center justify-center mr-3 ${
-                  expandedDay === day.day ? 'bg-white/20' : 'bg-green-100'
-                }`}>
-                  <Text className={`font-bold ${
-                    expandedDay === day.day ? 'text-white' : 'text-green-700'
-                  }`}>
-                    {day.day.substring(0, 3)}
-                  </Text>
-                </View>
-                <View>
-                  <Text className={`font-bold text-base ${
-                    expandedDay === day.day ? 'text-white' : 'text-gray-800'
-                  }`}>
-                    {day.day}
-                  </Text>
-                  <Text className={`text-sm ${
-                    expandedDay === day.day ? 'text-green-100' : 'text-gray-500'
-                  }`}>
-                    {day.focus}
-                  </Text>
-                </View>
-              </View>
-              <Ionicons
-                name={expandedDay === day.day ? 'chevron-up' : 'chevron-down'}
-                size={20}
-                color={expandedDay === day.day ? 'white' : '#9CA3AF'}
-              />
-            </TouchableOpacity>
-
-            {expandedDay === day.day && (
-              <View className="bg-white rounded-b-xl p-4 mt-1 border-t border-gray-100">
-                {day.instructions && (
-                  <Text className="text-gray-600 italic mb-4 bg-gray-50 p-3 rounded-lg">
-                    💡 {day.instructions}
-                  </Text>
-                )}
-                
-                {day.exercises && day.exercises.length > 0 ? (
-                  day.exercises.map((exercise, index) => renderExerciseItem(exercise, index))
-                ) : (
-                  <View className="items-center py-4">
-                    <Ionicons name="happy-outline" size={32} color="#9CA3AF" />
-                    <Text className="text-gray-500 mt-2">Rest and recover!</Text>
+                  <View>
+                    <Text className="text-white font-bold text-base">
+                      {day.day}
+                    </Text>
+                    <Text className={`text-sm ${
+                      expandedDay === day.day ? 'text-neon-green' : 'text-gray-500'
+                    }`}>
+                      {day.focus}
+                    </Text>
                   </View>
-                )}
-              </View>
-            )}
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+                </View>
+                <Ionicons
+                  name={expandedDay === day.day ? 'chevron-up' : 'chevron-down'}
+                  size={20}
+                  color={expandedDay === day.day ? '#00E676' : '#9CA3AF'}
+                />
+              </TouchableOpacity>
+
+              {expandedDay === day.day && (
+                <View className="bg-dark-charcoal/50 rounded-b-xl p-4 mx-2 border-x border-b border-white/5">
+                  {day.instructions && (
+                    <Text className="text-gray-400 italic mb-4 text-sm">
+                      💡 {day.instructions}
+                    </Text>
+                  )}
+                  
+                  {day.exercises && day.exercises.length > 0 ? (
+                    day.exercises.map((exercise, index) => renderExerciseItem(exercise, index))
+                  ) : (
+                    <View className="items-center py-4">
+                      <Ionicons name="happy-outline" size={32} color="#4B5563" />
+                      <Text className="text-gray-500 mt-2">Rest and recover!</Text>
+                    </View>
+                  )}
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
